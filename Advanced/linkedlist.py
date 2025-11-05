@@ -59,3 +59,19 @@ def floyd_cycle_detection(head):
 #Time Comp = O(m+n), Aux space = O(1) - m: No of nodes that are not part of the cycle. n: No of nodes in the cycle
 
 # Detect and remove a loop in linked list
+def floyd_cycle_removal(head):
+    slow = head
+    fast = head
+    while fast!=None and fast.next!=None:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            break
+    if slow!=fast:
+            return
+    slow = head
+    while slow.next!=fast.next:
+            slow = slow.next
+            fast = fast.next
+    fast.next = None
+            
