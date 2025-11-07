@@ -142,5 +142,6 @@ def int_ll(d, head1,head2): # d - differnece of size between the two linked list
             return curr1.key
         curr1 = curr1.next
         curr2 = curr2.next
+# Time comp = O(m+n) Space comp = O(1)
         
 
