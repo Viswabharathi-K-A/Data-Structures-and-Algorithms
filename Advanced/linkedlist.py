@@ -1,4 +1,4 @@
-class node:
+class Node:
     def __init__(self, val):
         self.key = val
         self.next = None
@@ -143,5 +143,76 @@ def int_ll(d, head1,head2): # d - differnece of size between the two linked list
         curr1 = curr1.next
         curr2 = curr2.next
 # Time comp = O(m+n) Space comp = O(1)
+
+# Segregate even and odd nodes
+def segregate_even_odd(head):
+    even_head = None
+    odd_head = None
+    curr_even = None
+    curr_odd = None
+    curr = head
+    while curr!= None:
+        if curr.key % 2 == 0:
+            if even_head == None:
+                even_head = curr
+            if curr_even != None:
+                curr_even.next = curr
+            curr_even = curr
+        else:
+            if odd_head == None:
+                odd_head = curr
+            if curr_odd != None:
+                curr_odd.next = curr
+            curr_odd = curr
+        curr = curr.next
+    if even_head == None:
+        return odd_head
+    if odd_head == None:
+        return even_head
+    curr_odd.next = None
+    curr_even.next = odd_head
+    return even_head
+# Time comp: O(n)
+
+# Pairwise swap nodes
+# 1 -> naive solution - swapping data
+def pairwise_swap_naive(head):
+    curr = head
+    while curr != None and curr.next != None:
+        curr.key, curr.next.key = curr.next.key, curr.key
+        curr = curr.next.next
+    return head
+
+# 2
+def pairwise_swap(head):
+    if head==None and head.next==None:
+        return head
+    curr = head.next.next
+    prev = head
+    head = head.next
+    head.next = prev
+    while curr!=None and curr.next!=None:
+        prev.next = curr.next
+        next = curr.next.next
+        prev = curr 
+        curr.next.next = curr 
+        curr = next
+    prev.next = curr
+    return head
+
+
+head = Node(17)
+head.next = Node(15)
+head.next.next = Node(8)
+head.next.next.next = Node(12)
+head.next.next.next.next = Node(5)
+
+
+new_head = pairwise_swap(head)
+
+pre = new_head
+while pre!=None:
+    print(pre.key)
+    pre = pre.next
         
 
