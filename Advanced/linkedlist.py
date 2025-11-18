@@ -2,6 +2,7 @@ class Node:
     def __init__(self, val):
         self.key = val
         self.next = None
+        self.random = None     # Used only for cloning a linked list problem
 
 # Reverse a linked list in group ff k
 
@@ -199,6 +200,83 @@ def pairwise_swap(head):
         curr = next
     prev.next = curr
     return head
+
+# Cloning a linked list
+
+# Naive
+def clone(head):
+    d = {None:None}
+    curr = head
+    while curr != None:
+        d[curr] = Node(curr.data)
+        curr = curr.next
+    curr = head
+    while curr!=None:
+        d[curr].next = d[curr.next]
+        d[curr].random = d[curr.random]
+        curr = curr.next
+    return d[head]
+# Time Comp = O(n), Aux space = O(n)
+
+
+# Efficient
+""" 
+Given a linked list h1 : 1 → 2 → 3 (each node also has a random pointer).
+
+==> Create clone nodes and insert at alternate positions
+
+For every original node, create its clone and insert it right after the original node in the same list.
+
+The list becomes: 1 → 1' → 2 → 2' → 3 → 3'
+(here 1', 2', 3' are the cloned nodes).
+
+==> Connect the clone nodes
+
+For each original node, set the random pointer of its clone using the interleaved structure, e.g.
+clone.random = original.random.next.
+
+Now all blue (cloned) nodes have their correct random links.
+
+==> Separate the original and clone nodes
+
+Restore the original list by linking only original nodes: h1 : 1 → 2 → 3.
+
+Extract the cloned list by linking only cloned nodes: h2 : 1' → 2' → 3'.
+
+Now you have two independent lists: the original (h1) and its deep copy (h2).
+"""
+
+def clone_efficient(head):
+    # Inserting clone nodes alternatively
+    curr = head
+    while curr != None:
+        next = curr.next
+        curr.next = Node(curr.data)
+        curr.next.next = next
+        curr = next
+    # Connecting clone nodes with random
+    curr = head
+    while curr != None:
+        clone_curr = curr.next
+        clone_curr.random = curr.random.next
+        curr = curr.next.next
+    
+    # seperate original and clone nodes
+    clone_head = head.next
+    clone_curr = clone_head
+    curr = head
+    while curr != None:
+        curr.next = curr.next.next
+        clone_curr.next = None if clone_curr.next==None else clone_curr.next.next
+        clone_curr = clone_curr.next
+        curr = curr.next
+    
+    return clone_head
+# Time Comp = O(n), Aux space = O(1)
+
+
+
+
 
 
 head = Node(17)
