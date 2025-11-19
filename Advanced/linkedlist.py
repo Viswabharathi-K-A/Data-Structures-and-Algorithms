@@ -176,7 +176,7 @@ def segregate_even_odd(head):
 # Time comp: O(n)
 
 # Pairwise swap nodes
-# 1 -> naive solution - swapping data
+# 1 -> naive solution - swapping key
 def pairwise_swap_naive(head):
     curr = head
     while curr != None and curr.next != None:
@@ -208,7 +208,7 @@ def clone(head):
     d = {None:None}
     curr = head
     while curr != None:
-        d[curr] = Node(curr.data)
+        d[curr] = Node(curr.key)
         curr = curr.next
     curr = head
     while curr!=None:
@@ -251,7 +251,7 @@ def clone_efficient(head):
     curr = head
     while curr != None:
         next = curr.next
-        curr.next = Node(curr.data)
+        curr.next = Node(curr.key)
         curr.next.next = next
         curr = next
     # Connecting clone nodes with random
@@ -274,7 +274,66 @@ def clone_efficient(head):
     return clone_head
 # Time Comp = O(n), Aux space = O(1)
 
+def merge_sorted_linled_list(a,b):
+    if a==None:
+        return b
+    if b==None:
+        return a
+    head,tail = None, None
+    if a.key <= b.key:
+        head = tail = a
+        a = a.next
+    else:
+        head = tail = b
+        b = b.next
+    while a!=None and b!=None:
+        if a.key<=b.key:
+            tail.next = a
+            tail = a
+            a = a.next
+        else:
+            tail.next = b
+            tail = b
+            b = b.next
+    if b == None:
+        tail.next = a
+    else:
+        tail.next = b
+    return head
 
+# Time Comp = O(m+n), Aux space = O(1)
+
+# Checking if a linkedlist is palindrome
+
+def reverse_ll(head):
+    curr = head
+    prev = None
+    while curr!= None:
+        next = curr.next
+        curr.next = prev
+        prev = curr
+        curr = next
+    return prev
+
+def isPalindrome(head):
+    if head==None:
+        return None
+    slow, fast = head, head
+    while fast.next!=None and fast.next.next!=None:
+        slow = slow.next
+        fast = fast.next.next
+    rev = reverse_ll(slow.next)
+    curr = head
+    while rev!=None:
+        if rev.key != curr.key:
+            return False
+        rev = rev.next
+        curr = curr.next
+    return True
+    
+    
+# Time comp = O(n), Aux space = O(1)
+         
 
 
 
